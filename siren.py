@@ -74,4 +74,8 @@ def main(query):
     run(query)
 
 if __name__ == "__main__":
-    main('Despicable Me 3')
+    #main('Despicable Me 3')
+    baseurl = 'http://127.0.0.1:32400'
+    token = 'QZ7rm9ZoZzRWtUDJASFz'
+    plex = PlexServer(baseurl, token)
+    print(plex.library.section('Siren Movies').search(resolution="4K"))

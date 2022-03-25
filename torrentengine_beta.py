@@ -1,17 +1,13 @@
 import requests, random, importlib
 from bs4 import BeautifulSoup
 from colorama import Fore, Style
-from alldebrid import AllDebrid
+from magnet_retrieval import MagnetRetrieval
 import sys, os
 sys.path.append(os.path.abspath(os.path.join('..', 'Z:\\Siren\\providers\\')))
-from one337x import get1337xTorrentData
 
 torrent_proxies_list = {
   "1337x": ["https://1337xx.to"],
   "ThePirateBay": ["https://www1.thepiratebay3.to"],
-  "apibay": ["http://apibay.org"],
-  "piratebay": ["https://thepiratebay.org"],
-  "Bitsearch": ["https://bitsearch.to"],
   "torrentgalaxy": ["https://torrentgalaxy.to"],
   "Rarbg": []
 }
@@ -125,28 +121,22 @@ def parse_magnets(link):
     Parses the magnets from the link.
     """
     magnets = []
-    # if link begins with https://1337x.to then use the 1337x proxy
+    MagnetRetrieval = MagnetRetrieval()
     if link.startswith("https://1337x.to"):
-        magnets = get1337xTorrentData(link)
-    # for proxy in torrent_proxies_list:
-    #     if proxy == "1337x":
-    #         magnets = get1337xTorrentData(link)
-    #     elif proxy == "ThePirateBay":
-    #         # TODO: Add the PirateBay search
-    #         pass
-    #     elif proxy == "Bitsearch":
-    #         # TODO: Add bitsearch
-    #         pass
-    #     elif proxy == "Rarbg":
-    #         # TODO: Add rarbg
-    #         pass
-    #     # TODO: Add more proxies
+        magnets = MagnetRetrieval.get1337xMagnet(link)
+    elif link.startswith("https://www1.thepiratebay3.to"):
+        magnets = MagnetRetrieval.getPirateBayMagnet(link)
+    elif link.startswith("https://torrentgalaxy.to"):
+        magnets = MagnetRetrieval.getTorrentGalaxyMagnet(link)
     return magnets
 
-searchPirateBay("Eternals")
-search1337x("Eternals")
-searchTorrentGalaxy("Eternals")
-print(sortByQuality(magnet_names))
+query = "Captain Marvel"
+searchPirateBay(query)
+search1337x(query)
+searchTorrentGalaxy(query)
+sortByQuality(magnet_names)
 with open("torrents.json", "w") as file:
     import json
     file.write(json.dumps(sortByQuality(magnet_names), indent=4))
+mr = MagnetRetrieval()
+print(Fore.GREEN + "[INFO] TorrentEngine: " +  mr.passLink()['magnet'])

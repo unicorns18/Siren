@@ -331,6 +331,3 @@ class TorrentEngine:
     data["files"] = files
     
     return data
-
-t = TorrentEngine()
-print(t.search1337x("game of thrones"))
